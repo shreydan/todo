@@ -45,10 +45,20 @@ function App() {
 
   const removeTask = (id) => {
       setTasks(tasks.filter(task => task.id !== id))
+      console.log('im here removed')
   }
 
   const completeTask = (id) => {
-      return 'lol'
+      setTasks(tasks.map(task => {
+        if(task.id === id) {
+          console.log(task)
+          return ({...task, completed: !task.completed})
+        }
+        else {
+          return (task)
+        }
+      }))
+      console.log('im here completed')
   }
 
   return (
@@ -62,11 +72,16 @@ function App() {
         <Label>Tasks</Label>
         <ItemsList>
           {
-            tasks.filter(task => task.completed !== true)
-            .map(({task, completed},key) => {
-              return (
-                <Item task={task} completed={completed} key={key}></Item>
-              )})
+             tasks.filter(task => task.completed !== true)
+             .map(({id, task, completed},key) => {
+               return (
+                 <Item task={task} id={id} 
+                       completed={completed} 
+                       key={key} 
+                       removeTask={removeTask}
+                       completeTask={completeTask}
+                       ></Item>
+               )})
           }
         </ItemsList>
 
@@ -75,9 +90,14 @@ function App() {
         <ItemsList>
           {
             tasks.filter(task => task.completed === true)
-            .map(({task, completed},key) => {
+            .map(({id, task, completed},key) => {
               return (
-                <Item task={task} completed={completed} key={key}></Item>
+                <Item task={task} id={id} 
+                      completed={completed} 
+                      key={key} 
+                      removeTask={removeTask}
+                      completeTask={completeTask}
+                      ></Item>
               )})
           }
         </ItemsList>
